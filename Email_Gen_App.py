@@ -23,6 +23,7 @@ st.title("Email Response Generator")
 email_query = st.text_area("Enter your email query:", value="", height=150)
 tone = st.selectbox("Select the tone of the email response:", ["Formal", "Friendly", "Neutral"])
 model_engine = st.selectbox("Select the AI model:", [
+    "text-davinci-003",
     "text-davinci-002",
     "text-curie-002",
     "text-babbage-002",

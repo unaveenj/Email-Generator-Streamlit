@@ -3,6 +3,28 @@ import openai
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
+
+def is_email_related(query):
+    keywords = [
+        "email",
+        "subject",
+        "recipient",
+        "cc",
+        "bcc",
+        "body",
+        "attachment",
+        "compose",
+        "draft",
+        "reply",
+        "forward",
+        "signature",
+        "write"
+    ]
+    query_words = query.lower().split()
+    return any(keyword in query_words for keyword in keywords)
+
+
+
 def generate_email(prompt, tone, model_engine, word_limit):
     response = openai.Completion.create(
         engine=model_engine,
@@ -34,8 +56,11 @@ word_limit = st.number_input("Select the number of words for the response:", min
 if st.button("Generate Email Response"):
     if not email_query:
         st.warning("Please enter an email query to generate a response.")
+    elif not is_email_related(email_query):
+        st.warning("Please enter a query related to creating emails.")
     else:
         prompt = f"Generate an email response to the following query in a {tone.lower()} tone:\n\n{email_query}\n\nResponse:"
         email_response = generate_email(prompt, tone, model_engine, word_limit)
         st.markdown(f"**Generated Email Response ({tone} Tone) using {model_engine}:**")
         st.write(email_response)
+

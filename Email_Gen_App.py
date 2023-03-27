@@ -85,6 +85,7 @@ tone = st.selectbox("Select the tone of the email response:", [
     "Unapologetic"
 ])
 model_engine = st.selectbox("Select the AI model:", [
+    'gpt-3.5-turbo',
     "text-davinci-003",
     "text-davinci-002",
     "text-curie-002",

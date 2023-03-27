@@ -34,7 +34,7 @@ def generate_email(prompt, tone, model_engine, word_limit):
 
 
     # Simulate progress (replace this with actual progress updates if possible)
-    for i in range(50):
+    for i in range(10):
         time.sleep(0.1)
         progress_bar.progress((i + 1) / 10)
 

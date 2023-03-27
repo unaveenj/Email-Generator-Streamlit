@@ -1,5 +1,6 @@
 import streamlit as st
 import openai
+import time
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
@@ -27,11 +28,25 @@ def is_email_related(query):
     return any(keyword in query_words for keyword in keywords)
 
 
-
 def generate_email(prompt, tone, model_engine, word_limit):
+    # Create a progress bar placeholder
+    progress_bar = st.progress(0)
+
+    chat_prompt = f"""
+    You are an AI language model assisting in generating email responses. Your assistant mode is set to '{tone.lower()}' tone.
+
+    User: {prompt}
+
+    AI:"""
+
+    # Simulate progress (replace this with actual progress updates if possible)
+    for i in range(10):
+        time.sleep(0.1)
+        progress_bar.progress((i + 1) / 10)
+
     response = openai.Completion.create(
         engine=model_engine,
-        prompt=prompt,
+        prompt=chat_prompt,
         max_tokens=word_limit,
         n=1,
         stop=None,
@@ -40,6 +55,9 @@ def generate_email(prompt, tone, model_engine, word_limit):
         frequency_penalty=0,
         presence_penalty=0
     )
+
+    # Set progress bar to 100%
+    progress_bar.progress(1)
 
     return response.choices[0].text.strip()
 

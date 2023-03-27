@@ -27,29 +27,18 @@ def is_email_related(query):
     query_words = query.lower().split()
     return any(keyword in query_words for keyword in keywords)
 
-
-def generate_email(prompt, tone, model_engine, word_limit):
-    # Create a progress bar placeholder
-    progress_bar = st.progress(0)
-
-
-    # Simulate progress (replace this with actual progress updates if possible)
-    for i in range(10):
-        time.sleep(0.1)
-        progress_bar.progress((i + 1) / 10)
-
-
+def generate_email(prompt, tone,model_engine,word_limit):
     if model_engine == 'gpt-3.5-turbo':
         response = openai.ChatCompletion.create(
             model=model_engine,
             messages = [{"role":"user","content":prompt}]
         )
-        progress_bar.progress(1)
         return response.choices[0].message.content.strip()
-    else:
 
-        response = openai.Completion.create(
-            engine=model_engine,
+    else:
+        # model_engine = "text-davinci-002"  # You can use other models like "text-curie-002", "text-babbage-002", etc.
+        response = openai.ChatCompletion.create(
+            model=model_engine,
             prompt=prompt,
             max_tokens=word_limit,
             n=1,
@@ -60,10 +49,8 @@ def generate_email(prompt, tone, model_engine, word_limit):
             presence_penalty=0
         )
 
-        # Set progress bar to 100%
-        progress_bar.progress(1)
-
         return response.choices[0].text.strip()
+
 
 st.title("Email Response Generator")
 

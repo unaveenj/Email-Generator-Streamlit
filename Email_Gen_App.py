@@ -32,34 +32,38 @@ def generate_email(prompt, tone, model_engine, word_limit):
     # Create a progress bar placeholder
     progress_bar = st.progress(0)
 
-    chat_prompt = f"""
-    You are an AI language model assisting in generating email responses. Your assistant mode is set to '{tone.lower()}' tone.
-
-    User: {prompt}
-
-    AI:"""
 
     # Simulate progress (replace this with actual progress updates if possible)
-    for i in range(10):
+    for i in range(50):
         time.sleep(0.1)
         progress_bar.progress((i + 1) / 10)
 
-    response = openai.Completion.create(
-        engine=model_engine,
-        prompt=chat_prompt,
-        max_tokens=word_limit,
-        n=1,
-        stop=None,
-        temperature=0.7,
-        top_p=1,
-        frequency_penalty=0,
-        presence_penalty=0
-    )
 
-    # Set progress bar to 100%
-    progress_bar.progress(1)
+    if model_engine == 'gpt-3.5-turbo':
+        response = openai.ChatCompletion.create(
+            model=model_engine,
+            messages = [{"role":"user","content":prompt}]
+        )
+        progress_bar.progress(1)
+        return response.choices[0].message.content.strip()
+    else:
 
-    return response.choices[0].text.strip()
+        response = openai.Completion.create(
+            engine=model_engine,
+            prompt=prompt,
+            max_tokens=word_limit,
+            n=1,
+            stop=None,
+            temperature=0.7,
+            top_p=1,
+            frequency_penalty=0,
+            presence_penalty=0
+        )
+
+        # Set progress bar to 100%
+        progress_bar.progress(1)
+
+        return response.choices[0].text.strip()
 
 st.title("Email Response Generator")
 
@@ -95,7 +99,12 @@ if st.button("Generate Email Response"):
     elif not is_email_related(email_query):
         st.warning("Please enter a query related to creating emails.")
     else:
-        prompt = f"Generate an email response to the following query in a {tone.lower()} tone:\n\n{email_query}\n\nResponse:"
+        prompt = f"""
+    You are an AI language model assisting in generating email responses. Your assistant mode is set to '{tone.lower()}' tone.
+
+    User: {email_query}
+
+    AI:"""
         email_response = generate_email(prompt, tone, model_engine, word_limit)
         st.markdown(f"**Generated Email Response ({tone} Tone) using {model_engine}:**")
         st.write(email_response)

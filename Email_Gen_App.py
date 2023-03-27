@@ -18,7 +18,10 @@ def is_email_related(query):
         "reply",
         "forward",
         "signature",
-        "write"
+        "write",
+        "send",
+        "mail",
+        "compose"
     ]
     query_words = query.lower().split()
     return any(keyword in query_words for keyword in keywords)
@@ -43,7 +46,22 @@ def generate_email(prompt, tone, model_engine, word_limit):
 st.title("Email Response Generator")
 
 email_query = st.text_area("Enter your email query:", value="", height=150)
-tone = st.selectbox("Select the tone of the email response:", ["Formal", "Friendly", "Neutral"])
+tone = st.selectbox("Select the tone of the email response:", [
+    "Formal",
+    "Friendly",
+    "Neutral",
+    "Polite",
+    "Casual",
+    "Enthusiastic",
+    "Diplomatic",
+    "Humorous",
+    "Assertive",
+    "Apologetic",
+    "Encouraging",
+    "Grateful",
+    "Serious",
+    "Unapologetic"
+])
 model_engine = st.selectbox("Select the AI model:", [
     "text-davinci-003",
     "text-davinci-002",
@@ -63,4 +81,3 @@ if st.button("Generate Email Response"):
         email_response = generate_email(prompt, tone, model_engine, word_limit)
         st.markdown(f"**Generated Email Response ({tone} Tone) using {model_engine}:**")
         st.write(email_response)
-

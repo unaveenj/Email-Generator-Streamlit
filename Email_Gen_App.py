@@ -2,6 +2,7 @@ import streamlit as st
 import openai
 import time
 
+
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 
@@ -95,4 +96,8 @@ if st.button("Generate Email Response"):
     AI:"""
         email_response = generate_email(prompt, tone, model_engine, word_limit)
         st.markdown(f"**Generated Email Response ({tone} Tone) using {model_engine}:**")
-        st.write(email_response)
+        edited_email = st.text_area("Edit the generated email response (if needed):", value=email_response, height=500)
+
+        if st.download_button("Download Email Response as Text File", data=edited_email.encode("utf-8"),
+                              file_name="email_response.txt", mime="text/plain"):
+            st.success("Email response downloaded successfully.")

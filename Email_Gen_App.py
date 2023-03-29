@@ -84,21 +84,21 @@ word_limit = st.number_input("Select the number of words for the response:", min
 
 if st.button("Generate Email Response"):
     with st.spinner("Generating response..."):
-      if not email_query:
-        st.warning("Please enter an email query to generate a response.")
-    elif not is_email_related(email_query):
-        st.warning("Please enter a query related to creating emails.")
-    else:
-        prompt = f"""
+        if not email_query:
+            st.warning("Please enter an email query to generate a response.")
+        elif not is_email_related(email_query):
+            st.warning("Please enter a query related to creating emails.")
+        else:
+            prompt = f"""
         You are an AI language model assisting in generating email responses. Your assistant mode is set to '{tone.lower()}' tone.
-
+    
         User: {email_query}
-
+    
         AI:"""
-        email_response = generate_email(prompt, tone, model_engine, word_limit)
-        st.markdown(f"**Generated Email Response ({tone} Tone) using {model_engine}:**")
-        edited_email = st.text_area("Edit the generated email response (if needed):", value=email_response, height=500)
+            email_response = generate_email(prompt, tone, model_engine, word_limit)
+            st.markdown(f"**Generated Email Response ({tone} Tone) using {model_engine}:**")
+            edited_email = st.text_area("Edit the generated email response (if needed):", value=email_response, height=500)
 
-        if st.download_button("Download Email Response as Text File", data=edited_email.encode("utf-8"),
-                              file_name="email_response.txt", mime="text/plain"):
-            st.success("Email response downloaded successfully.")
+            if st.download_button("Download Email Response as Text File", data=edited_email.encode("utf-8"),
+                                  file_name="email_response.txt", mime="text/plain"):
+                st.success("Email response downloaded successfully.")

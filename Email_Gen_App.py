@@ -83,17 +83,18 @@ model_engine = st.selectbox("Select the AI model:", [
 word_limit = st.number_input("Select the number of words for the response:", min_value=50, max_value=500, value=100, step=50)
 
 if st.button("Generate Email Response"):
-    if not email_query:
+    with st.spinner("Generating response..."):
+      if not email_query:
         st.warning("Please enter an email query to generate a response.")
     elif not is_email_related(email_query):
         st.warning("Please enter a query related to creating emails.")
     else:
         prompt = f"""
-    You are an AI language model assisting in generating email responses. Your assistant mode is set to '{tone.lower()}' tone.
+        You are an AI language model assisting in generating email responses. Your assistant mode is set to '{tone.lower()}' tone.
 
-    User: {email_query}
+        User: {email_query}
 
-    AI:"""
+        AI:"""
         email_response = generate_email(prompt, tone, model_engine, word_limit)
         st.markdown(f"**Generated Email Response ({tone} Tone) using {model_engine}:**")
         edited_email = st.text_area("Edit the generated email response (if needed):", value=email_response, height=500)

@@ -9,10 +9,11 @@ import pytz
 sg_timezone = pytz.timezone('Asia/Singapore')
 
 # get the current date and time in Singapore timezone
-sg_time = datetime.now(sg_timezone)
+now = datetime.now(sg_timezone)
 
 # format the date as dd-mm-yy
 formatted_datetime = now.strftime('%d-%m-%y %H:%M:%S')
+
 FORMSPREE_ENDPOINT = "https://formspree.io/f/mqkoydrl"
 
 

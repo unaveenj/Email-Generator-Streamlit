@@ -5,6 +5,8 @@ import pyrebase
 from datetime import datetime
 import pytz
 
+st.image("Logo.png")
+
 # set the timezone to Asia/Singapore
 sg_timezone = pytz.timezone('Asia/Singapore')
 

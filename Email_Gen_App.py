@@ -4,8 +4,7 @@ import requests
 import pyrebase
 from datetime import datetime
 import pytz
-
-st.image("Logo.png",use_column_width=True)
+import plotly.graph_objects as go
 
 # set the timezone to Asia/Singapore
 sg_timezone = pytz.timezone('Asia/Singapore')
@@ -97,6 +96,8 @@ def generate_email(prompt, tone,model_engine,word_limit):
         return response.choices[0].text.strip()
 
 
+st.title("Email Response Generator")
+
 email_query = st.text_area("Enter your email query:", value="", height=150)
 tone = st.selectbox("Select the tone of the email response:", [
     "Formal",
@@ -158,6 +159,25 @@ if st.button("Send Feedback"):
         st.warning("Please enter your feedback.")
     else:
         send_formspree_feedback(user_email, feedback)
+
+
+
+st.markdown("## Real-time Dashboard")
+info = database.get().val()
+# st.write(info.val())
+num_responses = len(info)
+st.markdown(f'### Number of Responses: {num_responses}')
+tones = {}
+for key in info:
+    tone = info[key]['Tone']
+    if tone in tones:
+        tones[tone] += 1
+    else:
+        tones[tone] = 1
+
+fig = go.Figure([go.Bar(x=list(tones.keys()), y=list(tones.values()))])
+fig.update_layout(title='Popular Tone dashboard')
+st.plotly_chart(fig, use_container_width=True)
 
 st.markdown("### Source Code")
 st.markdown("[GitHub Repository](https://github.com/unaveenj/Email-Generator-Streamlit)")

@@ -158,3 +158,6 @@ if st.button("Send Feedback"):
         st.warning("Please enter your feedback.")
     else:
         send_formspree_feedback(user_email, feedback)
+
+st.markdown("### Source Code")
+st.markdown("[GitHub Repository](https://github.com/unaveenj/Email-Generator-Streamlit)")

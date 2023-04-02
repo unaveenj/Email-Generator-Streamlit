@@ -1,9 +1,24 @@
 import streamlit as st
 import openai
-import time
+import requests
+
+FORMSPREE_ENDPOINT = "https://formspree.io/f/mqkoydrl"
 
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
+
+
+def send_formspree_feedback(user_email, feedback):
+    data = {
+        "user_email": user_email,
+        "feedback": feedback
+    }
+    response = requests.post(FORMSPREE_ENDPOINT, data=data)
+
+    if response.status_code == 200:
+        st.success("Feedback sent successfully!")
+    else:
+        st.error("An error occurred while sending the feedback. Please try again.")
 
 
 def is_email_related(query):
@@ -102,3 +117,14 @@ if st.button("Generate Email Response"):
             if st.download_button("Download Email Response as Text File", data=edited_email.encode("utf-8"),
                                   file_name="email_response.txt", mime="text/plain"):
                 st.success("Email response downloaded successfully.")
+
+st.markdown("### Feedback")
+user_email = st.text_input("Your email:")
+feedback = st.text_area("We'd love to hear your feedback! Share your thoughts here:")
+if st.button("Send Feedback"):
+    if not user_email:
+        st.warning("Please enter your email address.")
+    elif not feedback:
+        st.warning("Please enter your feedback.")
+    else:
+        send_formspree_feedback(user_email, feedback)

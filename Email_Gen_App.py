@@ -97,8 +97,6 @@ def generate_email(prompt, tone,model_engine,word_limit):
         return response.choices[0].text.strip()
 
 
-st.title("Email Response Generator")
-
 email_query = st.text_area("Enter your email query:", value="", height=150)
 tone = st.selectbox("Select the tone of the email response:", [
     "Formal",

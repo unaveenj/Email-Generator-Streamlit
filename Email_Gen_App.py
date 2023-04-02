@@ -1,11 +1,32 @@
 import streamlit as st
 import openai
 import requests
+import pyrebase
+from datetime import datetime
+# get today's date and time
+now = datetime.now()
 
+# format the date as dd-mm-yy
+formatted_datetime = now.strftime('%d-%m-%y %H:%M:%S')
 FORMSPREE_ENDPOINT = "https://formspree.io/f/mqkoydrl"
 
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
+
+config = {
+    "apiKey": st.secrets["FIREBASE_API"],
+    "authDomain": st.secrets["AUTH_DOMAIN"],
+    "databaseURL": st.secrets["DATABASE"],
+    "projectId": st.secrets["PROJECT_ID"],
+    "storageBucket": st.secrets["STORAGE_BUCKET"],
+    "messagingSenderId": st.secrets["SENDER_ID"],
+    "appId": st.secrets["APP_ID"],
+    "measurementId": st.secrets["MEASUREMENT_ID"]
+}
+
+firebase = pyrebase.initialize_app(config=config)
+
+database = firebase.database()
 
 
 def send_formspree_feedback(user_email, feedback):
@@ -117,6 +138,9 @@ if st.button("Generate Email Response"):
             if st.download_button("Download Email Response as Text File", data=edited_email.encode("utf-8"),
                                   file_name="email_response.txt", mime="text/plain"):
                 st.success("Email response downloaded successfully.")
+
+        data = {"Prompt":email_query , "Tone":tone , "Output":email_response}
+        database.child(f"{formatted_datetime}").set(data)
 
 st.markdown("### Feedback")
 user_email = st.text_input("Your email:")

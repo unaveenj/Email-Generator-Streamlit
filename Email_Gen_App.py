@@ -3,8 +3,13 @@ import openai
 import requests
 import pyrebase
 from datetime import datetime
-# get today's date and time
-now = datetime.now()
+import pytz
+
+# set the timezone to Asia/Singapore
+sg_timezone = pytz.timezone('Asia/Singapore')
+
+# get the current date and time in Singapore timezone
+sg_time = datetime.now(sg_timezone)
 
 # format the date as dd-mm-yy
 formatted_datetime = now.strftime('%d-%m-%y %H:%M:%S')

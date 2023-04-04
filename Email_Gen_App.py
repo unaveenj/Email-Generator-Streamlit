@@ -6,7 +6,7 @@ from datetime import datetime
 import pytz
 import plotly.graph_objects as go
 
-st.image("https://ibb.co/VQLtK12", use_column_width=True)
+st.image("https://i.ibb.co/MGgsXvM/Logo.png", use_column_width=True)
 
 # set the timezone to Asia/Singapore
 sg_timezone = pytz.timezone('Asia/Singapore')

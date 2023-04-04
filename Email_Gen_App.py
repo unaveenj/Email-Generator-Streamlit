@@ -6,6 +6,8 @@ from datetime import datetime
 import pytz
 import plotly.graph_objects as go
 
+st.image("https://ibb.co/VQLtK12", use_column_width=True)
+
 # set the timezone to Asia/Singapore
 sg_timezone = pytz.timezone('Asia/Singapore')
 
@@ -96,7 +98,7 @@ def generate_email(prompt, tone,model_engine,word_limit):
         return response.choices[0].text.strip()
 
 
-st.title("Email Response Generator")
+# st.title("Email Response Generator")
 
 email_query = st.text_area("Enter your email query:", value="", height=150)
 tone = st.selectbox("Select the tone of the email response:", [
